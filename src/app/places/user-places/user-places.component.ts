@@ -72,5 +72,18 @@ export class UserPlacesComponent implements OnInit{
     })
   }
 
-
+  /**
+   * mandaremos el objeto al service para que lo borre|quite
+   * @param place 
+   */
+  onRemovePlace(place: Place){
+    console.log(place);
+    
+   const subscription = this.placesService.removeUserPlace(place).subscribe({
+   })
+   //no es necesario pero es una buena idea
+   this.destroyRef.onDestroy(() =>{
+    subscription.unsubscribe();
+  })
+  }
 }

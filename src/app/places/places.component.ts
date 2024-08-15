@@ -15,7 +15,7 @@ export class PlacesComponent {
 
   //emite cuando se selecciona un elemento
   onSelectPlace(place: Place) {
-    console.log("clickeado");
+    //console.log("clickeado");
     
     this.selectPlace.emit(place);//vamos a emitir este objeto
   }
