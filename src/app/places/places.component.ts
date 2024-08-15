@@ -11,9 +11,12 @@ import { Place } from './place.model';
 })
 export class PlacesComponent {
   places = input.required<Place[]>();
-  selectPlace = output<Place>();
+  selectPlace = output<Place>();//evento para el contenedor padre
 
+  //emite cuando se selecciona un elemento
   onSelectPlace(place: Place) {
-    this.selectPlace.emit(place);
+    console.log("clickeado");
+    
+    this.selectPlace.emit(place);//vamos a emitir este objeto
   }
 }
