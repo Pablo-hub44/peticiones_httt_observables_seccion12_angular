@@ -22,7 +22,7 @@ app.use((req, res, next) => {
  * peticion get para conseguir todos los lugares
  */
 app.get("/places", async(req, res) => {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     //devolvera error para lanzar un error
     //return res.status(500).json();

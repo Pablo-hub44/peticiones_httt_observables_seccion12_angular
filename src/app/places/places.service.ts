@@ -21,7 +21,7 @@ export class PlacesService {
     return this.fetchPlaces('http://localhost:3000/places','Algo salio mas buscando nuevos lugares, Intentalo despues mas tarde')
   }
 
-  loadUserPlaces() {
+  loadUserPlaces(): Observable<Place[]>  {
     return this.fetchPlaces('http://localhost:3000/user-places','Algo salio mal buscando tus lugares favoritos, Intentalo despues mas tarde').pipe(tap({
       next:(userPlaces)=>{return this.userPlaces.set(userPlaces)}
     }))//tap() va a ejecutar algun codigo cmo se haria en subscribe pero sin subscribe
@@ -33,7 +33,24 @@ export class PlacesService {
    * @param place 
    */
   addPlaceToUserPlaces(selectedPlace: Place): Observable<any> {
-    return this.httpClient.put('http://localhost:3000/user-places',{placeId: selectedPlace.id})
+    const prevPlaces = this.userPlaces();
+
+    //validamos si tal place ya estaba en el array de places
+    if (!prevPlaces.some((place) => place.id === selectedPlace.id)) {
+      
+      this.userPlaces.set([...prevPlaces, selectedPlace])//lo agregamos
+    }
+
+
+    //*esto actualizara el objeto y emitira a todos los interesados
+    this.userPlaces.update((prevPlaces)=>{ return [...prevPlaces, selectedPlace]})//!si actualizamos antes de que se realice en el bakend va a dar error, aqui no tiene q ir
+
+    return this.httpClient.put('http://localhost:3000/user-places',{placeId: selectedPlace.id}).pipe(
+      catchError(error =>{
+        this.userPlaces.set(prevPlaces)
+        return throwError(()=> new Error('fallo al guardar lugar seleecionado,'))
+      })
+    )
   }
 
   removeUserPlace(place: Place) {}

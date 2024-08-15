@@ -61,7 +61,7 @@ export class AvailablePlacesComponent implements OnInit {
         error: (error: Error) => {
           console.error(error.message);//error.message
 
-          //this.error.set("")
+          this.error.set(error.message)
         },
         complete: () => {
           this.isFetching.set(false); //cuando se complete asignamos si valor otra ves a false
@@ -83,7 +83,7 @@ export class AvailablePlacesComponent implements OnInit {
    * @param selectedPlace 
    */
   onSelectPlace(selectedPlace: Place) {
-    console.log('clickeado');
+    //console.log('clickeado');
     
     const subscription = this.placesService.addPlaceToUserPlaces(selectedPlace).subscribe({
       next: (resData) => {
